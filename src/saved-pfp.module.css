@@ -43,3 +43,19 @@
   background: none;
   font-weight: inherit;
 }
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0 1rem;
+  text-align: center;
+}
+
+.info p {
+  margin: 0;
+}
+
+.info a {
+  font-weight: bold;
+}

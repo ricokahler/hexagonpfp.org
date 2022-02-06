@@ -181,7 +181,7 @@ export async function cropImage({
 
   // draw the image to the canvas
   context.drawImage(image, -x, -y, image.width, image.height);
-  return canvas.toDataURL('image/png');
+  return canvas.toDataURL('image/png', 0.7);
 }
 
 export async function scaleImage(imageUrl: string) {

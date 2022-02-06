@@ -32,15 +32,33 @@ export function SavedPfp({ svgElement, onCancel, onRetry }: Props) {
         >
           <Suspense fallback={<div className={styles.message}>Loading…</div>}>
             <PfpImage svgElement={svgElement} />
-            <div>
-              {isMobileDevice() ? 'Tap and hold' : 'Right click'} to save.
-            </div>
-            <div>
-              If you don't see a picture{' '}
-              <button className={styles.retry} onClick={onRetry}>
-                {isMobileDevice() ? 'tap' : 'click'} here
-              </button>{' '}
-              to retry.
+            <div className={styles.info}>
+              <div>
+                <p>
+                  {isMobileDevice() ? 'Tap and hold' : 'Right click'} to save.
+                </p>
+                {isMobileDevice() && <small>Share {'>'} Save Image</small>}
+              </div>
+              {isMobileDevice() && (
+                <p>
+                  Then, upload your photo through the
+                  <br />
+                  <a
+                    href="https://mobile.twitter.com/settings/profile"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Twitter mobile site.
+                  </a>
+                </p>
+              )}
+              <p>
+                If you don't see a picture{' '}
+                <button className={styles.retry} onClick={onRetry}>
+                  {isMobileDevice() ? 'tap' : 'click'} here
+                </button>{' '}
+                to retry.
+              </p>
             </div>
           </Suspense>
         </ErrorBoundary>

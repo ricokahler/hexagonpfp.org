@@ -53,3 +53,7 @@ button:disabled {
   background: darkgray;
   color: lightgray;
 }
+
+a {
+  color: inherit;
+}
