@@ -1,6 +1,6 @@
 const { sin, cos, abs, max, floor, random, PI } = Math;
 const TAU = 2 * PI;
-const size = 512;
+const size = 400;
 
 interface ToCartesianOptions {
   r: number;
@@ -141,7 +141,7 @@ export async function svgToPngDataUrl(svg: SVGSVGElement | null) {
   // draw the image to the canvas
   context.drawImage(image, 0, 0, size, size);
   context.fillStyle = '#888';
-  context.font = '12px Arial';
+  context.font = '10px Arial';
   context.fillText('hexagonpfp.org', size - 90, size - 26);
   return canvas.toDataURL('image/png');
 }
