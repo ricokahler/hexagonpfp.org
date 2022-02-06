@@ -40,6 +40,11 @@
   gap: 1rem;
 }
 
+.hexagonWrapper svg {
+  width: 100%;
+  margin: auto;
+}
+
 .svgButton {
   width: 100%;
   display: flex;
@@ -55,11 +60,6 @@
 
 .svgButton:active {
   background: none;
-}
-
-.hexagon {
-  width: 100%;
-  margin: auto;
 }
 
 .edit {

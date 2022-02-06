@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import { useMemo } from 'react';
+import { randomId } from './helpers';
 import styles from './range-slider.module.css';
 
 type Props = JSX.IntrinsicElements['input'] & {
@@ -8,14 +9,6 @@ type Props = JSX.IntrinsicElements['input'] & {
   displayValue: React.ReactNode;
 };
 
-function useId() {
-  return useMemo(() => {
-    return `id-${Array.from({ length: 3 })
-      .map(() => Math.floor(Math.random() * 255).toString(16))
-      .join('')}`;
-  }, []);
-}
-
 export function RangeSlider({
   className,
   datalist,
@@ -23,7 +16,7 @@ export function RangeSlider({
   displayValue,
   ...props
 }: Props) {
-  const id = useId();
+  const id = useMemo(randomId, []);
   const listId = `list-${id}`;
 
   return (

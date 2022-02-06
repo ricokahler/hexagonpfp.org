@@ -1,0 +1,45 @@
+.savedPfp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.pfpImage {
+  width: 100%;
+  max-width: 400px;
+  opacity: 0;
+  transition: opacity 500ms;
+}
+
+.pfpImageActive {
+  opacity: 1;
+}
+
+.message {
+  width: 100%;
+  aspect-ratio: 1;
+  max-width: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.retry {
+  appearance: none;
+  background: none;
+  border: none;
+  border-radius: 0;
+  color: inherit;
+  text-decoration: underline;
+  font-size: inherit;
+  padding: 0;
+  font-weight: inherit;
+}
+
+.retry:active {
+  background: none;
+  font-weight: inherit;
+}

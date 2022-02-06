@@ -22,7 +22,7 @@
 
 .wrapper::after {
   content: ' ';
-  background-color: white;
+  background: white;
   height: 2px;
   width: calc(100% - 32px);
   position: absolute;

@@ -1,14 +1,14 @@
 import { useState, useEffect, useRef, useDeferredValue, useMemo } from 'react';
 import {
   createPolygonPath,
-  downloadDataUrl,
-  svgToPngDataUrl,
   fileToDataUri,
   scaleImage,
+  isMobileDevice,
 } from './helpers';
 import { throttle } from 'lodash';
 import { RangeSlider } from './range-slider';
 import { Cropper } from './cropper';
+import { SavedPfp } from './saved-pfp';
 import styles from './app.module.css';
 
 export function App() {
@@ -22,6 +22,7 @@ export function App() {
   const [smoothness, setSmoothness] = useState(0.5);
   const [throttledSmoothness, _setThrottledSmoothness] = useState(0.5);
   const [rotation, setRotation] = useState(0);
+  const [savedSvg, setSavedSvg] = useState<SVGSVGElement | null>(null);
 
   const setThrottledSmoothness = useMemo(() => {
     return throttle(_setThrottledSmoothness, 50);
@@ -38,6 +39,12 @@ export function App() {
     sides: useDeferredValue(sides),
     smoothness: useDeferredValue(throttledSmoothness),
   });
+
+  const handleSave = () => {
+    if (svgRef.current) {
+      setSavedSvg(svgRef.current.cloneNode(true) as SVGSVGElement);
+    }
+  };
 
   return (
     <>
@@ -68,7 +75,6 @@ export function App() {
         {croppedImage ? (
           <svg
             ref={svgRef}
-            className={styles.hexagon}
             xmlns="http://www.w3.org/2000/svg"
             viewBox={viewBox}
           >
@@ -95,7 +101,6 @@ export function App() {
           >
             <svg
               ref={svgRef}
-              className={styles.hexagon}
               xmlns="http://www.w3.org/2000/svg"
               viewBox={viewBox}
             >
@@ -121,18 +126,20 @@ export function App() {
                       textAlign: 'center',
                     }}
                     dy={50}
+                    dx={7}
                   >
                     this could be you
                   </text>
                   <text
                     dy={80}
+                    dx={isMobileDevice() ? 2 : -4}
                     style={{
                       fontSize: 24,
                       fill: 'white',
                       textAlign: 'center',
                     }}
                   >
-                    tap here to pick a photo
+                    {isMobileDevice() ? 'tap' : 'click'} here to pick a photo
                   </text>
                 </g>
               </g>
@@ -216,17 +223,18 @@ export function App() {
 
         <button
           className={styles.save}
-          // disabled={!croppedImage}
-          onClick={async () => {
-            if (!svgRef.current) return;
-
-            const pngDataUrl = await svgToPngDataUrl(svgRef.current);
-            downloadDataUrl(pngDataUrl, 'hexagonpfp.png');
-          }}
+          disabled={!croppedImage || !!savedSvg}
+          onClick={handleSave}
         >
           Save PFP
         </button>
       </div>
+
+      <SavedPfp
+        svgElement={savedSvg}
+        onCancel={() => setSavedSvg(null)}
+        onRetry={handleSave}
+      />
     </>
   );
 }

@@ -1,6 +1,6 @@
-const { sin, cos, abs, max, PI } = Math;
+const { sin, cos, abs, max, floor, random, PI } = Math;
 const TAU = 2 * PI;
-const size = 400;
+const size = 512;
 
 interface ToCartesianOptions {
   r: number;
@@ -111,17 +111,19 @@ export function fileToDataUri(file: File) {
   });
 }
 
-export async function svgToPngDataUrl(svg: SVGSVGElement) {
-  // convert to SVG blob URL
-  const blob = new Blob([new XMLSerializer().serializeToString(svg)], {
-    type: 'image/svg+xml;charset=utf-8',
-  });
-  const blobUrl = URL.createObjectURL(blob);
+export async function svgToPngDataUrl(svg: SVGSVGElement | null) {
+  // used for the promise suspender
+  if (!svg) return new Promise<never>(() => {});
+
+  // convert to data URL
+  const svgDataUrl = `data:image/svg+xml,${encodeURIComponent(
+    new XMLSerializer().serializeToString(svg.cloneNode(true)),
+  )}`;
 
   // load image
   const image = new Image();
   setTimeout(() => {
-    image.src = blobUrl;
+    image.src = svgDataUrl;
   }, 0);
   await new Promise((resolve, reject) => {
     image.addEventListener('load', resolve);
@@ -138,19 +140,10 @@ export async function svgToPngDataUrl(svg: SVGSVGElement) {
 
   // draw the image to the canvas
   context.drawImage(image, 0, 0, size, size);
+  context.fillStyle = '#888';
+  context.font = '16px Arial';
+  context.fillText('hexagonpfp.org', size - 120, size - 16);
   return canvas.toDataURL('image/png');
-}
-
-export function downloadDataUrl(dataUrl: string, filename: string) {
-  const link = document.createElement('a');
-  link.download = filename;
-  link.style.opacity = '0';
-  link.href = dataUrl;
-
-  document.body.append(link);
-
-  link.click();
-  link.remove();
 }
 
 interface CropImageOptions {
@@ -216,4 +209,27 @@ export async function scaleImage(imageUrl: string) {
   // draw the image to the canvas
   context.drawImage(image, 0, 0, width, height);
   return canvas.toDataURL('image/png');
+}
+
+export function randomId() {
+  return `id-${Array.from({ length: 3 })
+    .map(() => floor(random() * 255).toString(16))
+    .join('')}`;
+}
+
+const ids = new WeakMap();
+
+export function assignId(obj: object | null) {
+  if (!obj) return 'null';
+
+  const id = ids.get(obj);
+  if (id) return id;
+
+  const newId = randomId();
+  ids.set(obj, newId);
+  return newId;
+}
+
+export function isMobileDevice() {
+  return /Android|webOS|iPhone|iPad|iPod/i.test(navigator.userAgent);
 }
