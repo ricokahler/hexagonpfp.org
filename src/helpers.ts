@@ -141,8 +141,8 @@ export async function svgToPngDataUrl(svg: SVGSVGElement | null) {
   // draw the image to the canvas
   context.drawImage(image, 0, 0, size, size);
   context.fillStyle = '#888';
-  context.font = '16px Arial';
-  context.fillText('hexagonpfp.org', size - 120, size - 16);
+  context.font = '12px Arial';
+  context.fillText('hexagonpfp.org', size - 90, size - 26);
   return canvas.toDataURL('image/png');
 }
 
