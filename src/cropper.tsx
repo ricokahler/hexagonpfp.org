@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ReactEasyCrop from 'react-easy-crop';
 import { cropImage } from './helpers';
 import styles from './cropper.module.css';
@@ -17,6 +17,12 @@ export function Cropper({ open, imageUrl, onCancel, onClear, onCrop }: Props) {
   const [zoom, setZoom] = useState(1);
   const cropperRef = useRef<ReactEasyCrop | null>(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      cropperRef.current?.computeSizes();
+    }, 100);
+  }, [open]);
 
   const handleDone = async () => {
     setLoading(true);
