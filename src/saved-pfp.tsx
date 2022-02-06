@@ -33,12 +33,21 @@ export function SavedPfp({ svgElement, onCancel, onRetry }: Props) {
           <Suspense fallback={<div className={styles.message}>Loading…</div>}>
             <PfpImage svgElement={svgElement} />
             <div className={styles.info}>
+              <p>
+                If you don't see a picture{' '}
+                <button className={styles.retry} onClick={onRetry}>
+                  {isMobileDevice() ? 'tap' : 'click'} here
+                </button>{' '}
+                to retry.
+              </p>
+
               <div>
                 <p>
                   {isMobileDevice() ? 'Tap and hold' : 'Right click'} to save.
                 </p>
                 {isMobileDevice() && <small>Share {'>'} Save Image</small>}
               </div>
+
               {isMobileDevice() && (
                 <p>
                   Then, upload your photo through the
@@ -52,13 +61,6 @@ export function SavedPfp({ svgElement, onCancel, onRetry }: Props) {
                   </a>
                 </p>
               )}
-              <p>
-                If you don't see a picture{' '}
-                <button className={styles.retry} onClick={onRetry}>
-                  {isMobileDevice() ? 'tap' : 'click'} here
-                </button>{' '}
-                to retry.
-              </p>
             </div>
           </Suspense>
         </ErrorBoundary>
